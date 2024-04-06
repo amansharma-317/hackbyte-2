@@ -16,3 +16,11 @@ Features of the app:-
 5) Hotline Section
 
 With our app, support is just a chat away.
+
+Things done until now:-
+
+Authentication using OTP
+Matching algorithm for personalized chat support
+Realtime-Chat Functionality
+Mental Health Assessment
+UI & idea finalized
