@@ -78,115 +78,120 @@ class MyChats extends ConsumerWidget {
                                       }
 
                                       if(otherUser != null) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (BuildContext context) => ChatScreen(chatId: chat.chatId), // Pass the chatId to the ChatScreen
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Color(0xff88AB8E).withOpacity(0.5),
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            height: height * 0.15,
-                                            margin: EdgeInsets.symmetric(horizontal: 0),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                SizedBox(width: 16,),
-                                                CircleAvatar(
-                                                  backgroundColor: Color(0xFFEEEEEE),
-                                                  child: SvgPicture.string(
-                                                    otherUser.avatar,
-                                                    semanticsLabel: 'Profile Picture',
-                                                    placeholderBuilder: (BuildContext context) => Container(
-                                                      padding: const EdgeInsets.all(20.0),
-                                                      child: const CircularProgressIndicator(),
+                                        return Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (BuildContext context) => ChatScreen(chatId: chat.chatId), // Pass the chatId to the ChatScreen
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xff88AB8E).withOpacity(0.5),
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                                height: height * 0.15,
+                                                margin: EdgeInsets.symmetric(horizontal: 0),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(width: 16,),
+                                                    CircleAvatar(
+                                                      backgroundColor: Color(0xFFEEEEEE),
+                                                      child: SvgPicture.string(
+                                                        otherUser.avatar,
+                                                        semanticsLabel: 'Profile Picture',
+                                                        placeholderBuilder: (BuildContext context) => Container(
+                                                          padding: const EdgeInsets.all(20.0),
+                                                          child: const CircularProgressIndicator(),
+                                                        ),
+                                                      ),
+                                                      radius: height*0.04,
                                                     ),
-                                                  ),
-                                                  radius: height*0.04,
-                                                ),
-                                                SizedBox(width: 10,),
-                                                Expanded(
-                                                  flex: 4,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Text(
-                                                        otherUser.username,
-                                                        style: GoogleFonts.poppins(
-                                                          textStyle: TextStyle(
-                                                            color: Colors.black,
-                                                            letterSpacing: 1,
-                                                            fontSize: 16,
-                                                            fontWeight: FontWeight.w600,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      // Full name or message
-                                                      Flexible(
-                                                        child: Container(
-                                                          width: width * 0.6,
-                                                          child:
+                                                    SizedBox(width: 10,),
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
                                                           Text(
-                                                            (isLastMessageByCurrentUser ? 'You: ' : '') +
-                                                                (chat.lastMessage != null ? chat.lastMessage!.text : 'Start chatting!'),
-                                                            style: TextStyle(
-                                                              color: Colors.black,
-                                                              letterSpacing: 1,
-                                                              fontSize: 14,
-                                                              fontWeight: isLastMessageByCurrentUser || isLastMessageRead ? FontWeight.normal : FontWeight.bold,
-                                                              overflow: TextOverflow.ellipsis,
-                                                            ),
-                                                          ),
-
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Spacer(),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Column(
-                                                    children: [
-                                                      Spacer(),
-                                                      !isLastMessageRead ? Container() : Icon(Icons.circle, size: height * 0.01, color: Color(0xff008080)),
-
-                                                      //Icon(Icons.circle, size: height * 0.01, color: Color(0xff008080),),
-                                                      SizedBox(height: 12,),
-                                                      GestureDetector(
-                                                        onTap: () async {
-                                                          // Handle onTap action for the time
-                                                        },
-                                                        child: formattedTimestamp.length>0 ? FittedBox(
-                                                          fit: BoxFit.contain,
-                                                          child: Text(
-                                                            formattedTimestamp,
-                                                            style: GoogleFonts.lato(
+                                                            otherUser.username,
+                                                            style: GoogleFonts.poppins(
                                                               textStyle: TextStyle(
-                                                                color: Colors.black54,
+                                                                color: Colors.black,
                                                                 letterSpacing: 1,
-                                                                //fontSize: 10,
-                                                                fontWeight: FontWeight.normal,
+                                                                fontSize: 16,
+                                                                fontWeight: FontWeight.w600,
                                                               ),
                                                             ),
                                                           ),
-                                                        ) : Container(),
+                                                          // Full name or message
+                                                          Flexible(
+                                                            child: Container(
+                                                              width: width * 0.6,
+                                                              child:
+                                                              Text(
+                                                                (isLastMessageByCurrentUser ? 'You: ' : '') +
+                                                                    (chat.lastMessage != null ? chat.lastMessage!.text : 'Start chatting!'),
+                                                                style: TextStyle(
+                                                                  color: Colors.black,
+                                                                  letterSpacing: 1,
+                                                                  fontSize: 14,
+                                                                  fontWeight: isLastMessageByCurrentUser || isLastMessageRead ? FontWeight.normal : FontWeight.bold,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                ),
+                                                              ),
+
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                      Spacer(),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    Spacer(),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Column(
+                                                        children: [
+                                                          Spacer(),
+                                                          !isLastMessageRead ? Container() : Icon(Icons.circle, size: height * 0.01, color: Color(0xff008080)),
+
+                                                          //Icon(Icons.circle, size: height * 0.01, color: Color(0xff008080),),
+                                                          SizedBox(height: 12,),
+                                                          GestureDetector(
+                                                            onTap: () async {
+                                                              // Handle onTap action for the time
+                                                            },
+                                                            child: formattedTimestamp.length>0 ? FittedBox(
+                                                              fit: BoxFit.contain,
+                                                              child: Text(
+                                                                formattedTimestamp,
+                                                                style: GoogleFonts.lato(
+                                                                  textStyle: TextStyle(
+                                                                    color: Colors.black54,
+                                                                    letterSpacing: 1,
+                                                                    //fontSize: 10,
+                                                                    fontWeight: FontWeight.normal,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ) : Container(),
+                                                          ),
+                                                          Spacer(),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 12,),
+                                                  ],
                                                 ),
-                                                SizedBox(width: 12,),
-                                              ],
+                                              ),
                                             ),
-                                          ),
+                                            SizedBox(height: 8),
+                                          ],
                                         );
                                       } else{
                                         print('other user not found');
