@@ -116,6 +116,12 @@ class OTPScreen extends ConsumerWidget {
 
                       await ref.read(authStateNotifierProvider.notifier).verifyOTP(phone, _otpController.text);
                     // bool isOTPVerified = await ref.read(authStateNotifierProvider.notifier).verifyOTP(phone, _otpController.text);
+                      await Future.delayed(Duration(seconds: 3));
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BottomBar()),
+                      );
                   },
                   child: Text('Verify OTP',style: AppTextStyles.font_poppins.copyWith(
                     fontSize: 20,

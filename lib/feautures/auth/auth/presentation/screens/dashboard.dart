@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hackbyte2/config/utils/const.dart';
 import 'package:hackbyte2/feautures/auth/auth/presentation/screens/widgets/dashboard_article.dart';
@@ -19,7 +20,6 @@ class Dashboard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // AsyncValue<UserProfile> userProfile = ref.watch(userDataProvider);
     final userProfileFuture = ref.watch(userDataProvider);
-
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -33,11 +33,11 @@ class Dashboard extends ConsumerWidget {
                 children: [
                   //appbar and big-box stack
                   Container(
-                    height: height*0.48,
+                    height: height*0.52,
                     child: Stack(
                       children: [
                         Container(
-                          height: height*0.35*0.5,
+                          height: height*0.35*0.6,
                           decoration: BoxDecoration(
                               color: Color(0x5088AB8E),
                               borderRadius: BorderRadius.only(
@@ -50,15 +50,11 @@ class Dashboard extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   CircleAvatar(backgroundImage: AssetImage("assets/images/profileicon.png"),radius: 16,),
                                   Spacer(),
-                                  GestureDetector(
-                                      child: Icon(Icons.notifications_none_rounded),
-                                    onTap: () {
-                                        FirebaseAuth.instance.signOut();
-                                    }
-                                  ),
+                                  Icon(Icons.notifications_none_rounded),
                                 ],
                               ),
                               SizedBox(height: 12,),
@@ -69,8 +65,15 @@ class Dashboard extends ConsumerWidget {
 
                                   // Return a multiline Text widget
                                   return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Good morning,", style: AppTextStyles.font_lato.copyWith(fontSize: 16),),
+                                      Container(
+                                        child: FittedBox(
+                                            child: Text("Hello,", style: AppTextStyles.font_lato.copyWith(fontSize: 16),),
+                                            fit: BoxFit.contain,
+                                          alignment: Alignment.centerLeft,
+                                        ),
+                                      ),
                                       SizedBox(height: 8,),
                                       FittedBox(
                                         alignment: Alignment.centerLeft,
@@ -92,30 +95,30 @@ class Dashboard extends ConsumerWidget {
                         ),
                         //SizedBox(height: 16,),
                         Positioned(
-                            top: height*0.25*0.50,
+                            top: height*0.25*0.6,
                             //height: 288,
                             child: Container(
                               margin: EdgeInsets.symmetric(horizontal: 16 ),
                               width: width-32,
-                              height: height*0.33,
+                              height: height*0.35,
                               padding: EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                  color: Color(0xFF88AB8E),
+                                  color: Color(0xFFB0C8AB),
                                   borderRadius: BorderRadius.circular(20)),
                               child: Column(
                                 children: [
-                                  Text("Support is a tap away!",style: AppTextStyles.font_poppins.copyWith(fontSize: width*0.06,color: Color(0xFFF5F5F5),fontWeight: FontWeight.bold,letterSpacing: 2),),
+                                  Text("Support is a tap away!",style: AppTextStyles.font_poppins.copyWith(fontSize: width*0.06,color: Color(0xFF000000),fontWeight: FontWeight.bold,letterSpacing: 2),),
                                   SizedBox(height: 16,),
                                   Row(
                                     children: [
                                       Column(children: [
                                         Container(
                                           height: height*0.14,
-                                          width: 120 ,
-                                          child: Image.asset("assets/images/cartoon.png",fit: BoxFit.fill,),
+                                          width: 120,
+                                          child: SvgPicture.asset('assets/images/sleep.svg', fit: BoxFit.fill,),
                                         ),
                                         SizedBox(height: 16,),
-                                        Text("Reach Out, Speak Up",style: AppTextStyles.font_lato.copyWith(fontSize: 14,fontWeight: FontWeight.w300,color: Color(0xffFFFFFF)),),
+                                        Text("Reach Out, Speak Up",style: AppTextStyles.font_lato.copyWith(fontSize: 14,fontWeight: FontWeight.w300,color: Color(0xff000000)),),
                                         SizedBox(height: 8,),
                                         userProfileFuture.when(
                                           data: (user) {
@@ -134,20 +137,19 @@ class Dashboard extends ConsumerWidget {
                                                       ref.refresh(matchUserProvider(user.assessmentResponses));
                                                       print('result is: ' + result.toString());
                                                       result.when(
-                                                        data: (result) {
-                                                          print('got result');
-                                                          if(result.success == false) {
-                                                            Fluttertoast.showToast(msg: result.errorMessage.toString());
-                                                          } else if(result.success == true) {
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => MyChats()));
-                                                          }
+                                                          data: (result) {
+                                                            print('got result');
+                                                            if(result.success == false) {
+                                                              Fluttertoast.showToast(msg: result.errorMessage.toString());
+                                                            } else if(result.success == true) {
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context) => MyChats()));
+                                                            }
 
-                                                        },
+                                                          },
                                                         error: (error, stackTrace) => Fluttertoast.showToast(msg: "Error fetching data: $error"),
                                                         loading: () => Fluttertoast.showToast(msg: "loading..."),
                                                       );
-                                                    },
-                                                    child: Text("Chat Now",style: AppTextStyles.font_poppins.copyWith(fontSize: height*0.017,fontWeight: FontWeight.w700,color: Color(0xFFFBFBFB),letterSpacing: 1),));
+                                                    }, child: Text("Chat Now",style: AppTextStyles.font_poppins.copyWith(fontSize: height*0.017,fontWeight: FontWeight.w700,color: Color(0xFFFBFBFB),letterSpacing: 1),));
                                               }
                                             );
                                           },
@@ -162,11 +164,11 @@ class Dashboard extends ConsumerWidget {
                                         children: [
                                           Container(
                                             height: height*0.14,
-                                            width: 80 ,
-                                            child: Image.asset("assets/images/support.png",fit: BoxFit.fill,),
+                                            width: 120 ,
+                                            child: SvgPicture.asset('assets/images/Stress.svg', fit: BoxFit.fill,),
                                           ),
                                           SizedBox(height: 16,),
-                                          Text("Emergency Help",style: AppTextStyles.font_lato.copyWith(fontSize: 14,fontWeight: FontWeight.w300,color: Color(0xffFFFFFF)),),
+                                          Text("Emergency Help",style: AppTextStyles.font_lato.copyWith(fontSize: 14,fontWeight: FontWeight.w300,color: Color(0xff000000)),),
                                           SizedBox(height: 8,),
                                           ElevatedButton(
                                               style: ElevatedButton.styleFrom(
@@ -176,11 +178,9 @@ class Dashboard extends ConsumerWidget {
                                                 elevation: 0,
                                               ),
                                               onPressed: (){
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(builder: (context) => HotlineScreen()),
-                                                );
-                                              }, child: Text("Instant Help",style: AppTextStyles.font_poppins.copyWith(fontSize: height*0.017,fontWeight: FontWeight.w700,color: Color(0xFFFBFBFB),letterSpacing: 1),)),
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => HotlineScreen()));
+                                              },
+                                              child: Text("Instant Help",style: AppTextStyles.font_poppins.copyWith(fontSize: height*0.017,fontWeight: FontWeight.w700,color: Color(0xFFFBFBFB),letterSpacing: 1),)),
                                         ],
                                       ),
                                     ],),
@@ -190,8 +190,9 @@ class Dashboard extends ConsumerWidget {
                       ],
                     ),
                   ),
+
                   Container(
-                    height: height*0.16,
+                    height: height*0.185,
                     margin: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
@@ -265,8 +266,8 @@ class Dashboard extends ConsumerWidget {
                                   );
                                 },
                                 child: Container(
-                                  width: width*0.4,
-                                  child: DashboardArticleCard(title: articles[index].title,),
+                                    width: width*0.4,
+                                    child: DashboardArticleCard(title: articles[index].title,),
                                 )
                             );
                           },
@@ -277,6 +278,66 @@ class Dashboard extends ConsumerWidget {
 
                     ),
                   ),
+                  /*
+                  Container(
+                    height: height*0.15,
+                    margin: EdgeInsets.only(left: 16,right: 16,bottom: 16),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Card(
+                          color: Color(0xFFD9D9D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: SizedBox(
+                            width: width*0.37,
+                          ),
+                        ),
+                        SizedBox(width: 8,),
+                        Card(
+                          color: Color(0xFFD9D9D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: SizedBox(
+                            width: width*0.37,
+                          ),
+                        ),
+                        SizedBox(width: 8,),
+                        Card(
+                          color: Color(0xFFD9D9D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: SizedBox(
+                            width: width*0.37,
+                          ),
+                        ),
+                        SizedBox(width: 8,),
+                        Card(
+                          color: Color(0xFFD9D9D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: SizedBox(
+                            width: width*0.37,
+                          ),
+                        ),
+                        SizedBox(width: 8,),
+                        Card(
+                          color: Color(0xFFD9D9D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: SizedBox(
+                            width: width*0.37,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                   */
                 ],
               ),
             ),
